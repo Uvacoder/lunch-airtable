@@ -1,0 +1,17 @@
+{
+  "name": "lunchtime",
+  "private": true,
+  "scripts": {
+    "build": "gridsome build",
+    "dev": "gridsome develop",
+    "explore": "gridsome explore"
+  },
+  "dependencies": {
+    "@gridsome/source-airtable": "^0.1.4",
+    "gridsome": "0.7.12"
+  },
+  "devDependencies": {
+    "gridsome-plugin-purgecss": "^1.0.12",
+    "gridsome-plugin-tailwind": "^0.0.2"
+  }
+}
