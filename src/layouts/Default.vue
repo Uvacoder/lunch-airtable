@@ -4,10 +4,6 @@
       <strong>
         <g-link to="/">{{ $static.metadata.siteName }}</g-link>
       </strong>
-      <nav class="nav">
-        <g-link class="nav__link dark:bg-bluegreen" to="/">Home</g-link>
-        <g-link class="nav__link" to="/about/">About</g-link>
-      </nav>
       <div @click="switchMode" class="text-gray-500 hover:text-black dark-hover:text-white">
         <IconBase v-if="isDarkMode" icon-name="sun" fill="none" stroke="currentColor"><IconSun/></IconBase>
         <IconBase v-else icon-name="moon"><IconMoon/></IconBase>
@@ -69,12 +65,14 @@ export default {
 <style>
 body {
   font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color: theme('colors.gray.700');
   margin:0;
   padding:0;
   line-height: 1.5;
 }
 .dark-mode body{
-    background: theme('colors.black');
+  background: theme('colors.gray.900');
+  color: theme('colors.gray.400');
 }
 
 .layout {
