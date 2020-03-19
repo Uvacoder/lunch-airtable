@@ -10,7 +10,7 @@
       :id="iconName"
       lang="en"
     >{{ iconName }} icon</title>
-    <g :fill="fillColor">
+    <g :fill="fill" :stroke="stroke">
       <slot />
     </g>
   </svg>
@@ -31,11 +31,11 @@ export default {
       type: [Number, String],
       default: 18
     },
-    fillColor: {
+    fill: {
       type: String,
       default: 'currentColor'
     },
-    strokeColor: {
+    stroke: {
       type: String,
       default: 'none'
     },

@@ -6,7 +6,7 @@
       </strong>
       <div @click="switchMode" class="text-gray-500 hover:text-black dark-hover:text-white">
         <IconBase v-if="isDarkMode" icon-name="sun" fill="none" stroke="currentColor"><IconSun/></IconBase>
-        <IconBase v-else icon-name="moon"><IconMoon/></IconBase>
+        <IconBase v-else icon-name="moon" fill="none" stroke="currentColor"><IconMoon/></IconBase>
       </div>
     </header>
     <slot/>
