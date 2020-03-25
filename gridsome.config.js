@@ -41,6 +41,7 @@ module.exports = {
           './src/**/*.js',
           './src/**/*.md'
         ],
+        whitelist: ['dark-mode'],
         defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || [],
       }
     }
