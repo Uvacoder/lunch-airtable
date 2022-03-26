@@ -6,9 +6,9 @@ module.exports = {
     extend: {},
   },
   variants: {
-    backgroundColor: ['responsive', 'hover', 'focus', 'dark', 'dark-hover', 'dark-group-hover'],
-    borderColor: ['responsive', 'hover', 'focus', 'dark', 'dark-focus', 'dark-focus-within'],
-    textColor: ['responsive', 'hover', 'focus', 'dark', 'dark-hover', 'dark-active']
+    backgroundColor: ['responsive', 'hover', 'focus', 'dark', 'dark-hover', 'dark-group-hover', 'dark-focus', 'dark-focus-within', 'dark-active'],
+    borderColor: ['responsive', 'hover', 'focus', 'dark', 'dark-hover', 'dark-group-hover', 'dark-focus', 'dark-focus-within', 'dark-active'],
+    textColor: ['responsive', 'hover', 'focus', 'dark', 'dark-hover', 'dark-group-hover', 'dark-focus', 'dark-focus-within', 'dark-active']
   },
   plugins: [
     plugin(function({ addVariant, theme, e }) {

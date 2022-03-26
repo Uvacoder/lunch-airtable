@@ -47,7 +47,7 @@ export default {
         window.matchMedia('(prefers-color-scheme: dark)').matches
       this.setDarkMode()
     },
-    setDarkMode() {
+    setMode() {
       if (this.isDarkMode) {
         document.documentElement.classList.add('dark-mode')
       } else {
@@ -56,7 +56,7 @@ export default {
     },
     switchMode() {
       this.isDarkMode = !this.isDarkMode
-      this.setDarkMode()
+      this.setMode()
     },
   },
 }
