@@ -61,6 +61,7 @@ export default {
       isRunning: false,
       selectedIndex: 0,
       selectedRestaurant: null,
+      pastSelections: [],
       slots: [],
     }
   },
@@ -89,19 +90,28 @@ export default {
   },
   methods: {
     runSlots() {
-      const lastSelected = this.selectedRestaurant
-      let slotsArray = this.inflatedRestaurants
-      if (lastSelected) slotsArray.splice(slotsArray.indexOf(lastSelected), 1)
-      const length = slotsArray.length
-      const selectedIndex = Math.floor(Math.random() * length + 1)
-      const trimmedSlotsArray = slotsArray.slice(0, selectedIndex + 1)
-      let scrollSlotsArray = [...slotsArray, ...slotsArray]
-      if (lastSelected) scrollSlotsArray = [lastSelected, ...scrollSlotsArray]
-      this.slots = [...scrollSlotsArray, ...trimmedSlotsArray]
+      // clear the selected restaurant
       this.selectedRestaurant = null
+      // get the last item in past selections
+      const lastSelected = this.pastSelections[this.pastSelections.length - 1]
+      // filter out any items from the restaurant array that are in the past selections array
+      let slotsArray = this.inflatedRestaurants.filter(it => !this.pastSelections.find(past => past.id === it.id))
+      // get a randowm index from the slots array
+      const selectedIndex = Math.floor(Math.random() * slotsArray.length + 1)
+      // get a version of the slots array trimmed to the selected restaurant
+      const trimmedSlotsArray = slotsArray.slice(0, selectedIndex + 1)
+      // build out the scrolling list
+      let scrollSlotsArray = [...slotsArray, ...slotsArray]
+      // if there is a last selected item, add it to the beginning of the list so the animation doesn't jump
+      if (lastSelected) scrollSlotsArray = [lastSelected, ...scrollSlotsArray]
+      // set the slots array for the UI
+      this.slots = [...scrollSlotsArray, ...trimmedSlotsArray]
+      // run the animation
       this.isRunning = true
+      // after the animation is done, set the selected restaurant, push to past selections, reset the slots array, and stop the animation
       setTimeout(() => {
-        this.selectedRestaurant = this.inflatedRestaurants[selectedIndex]
+        this.selectedRestaurant = slotsArray[selectedIndex]
+        this.pastSelections.push(this.selectedRestaurant)
         this.slots = [this.selectedRestaurant]
         this.isRunning = false
       }, 5000)
