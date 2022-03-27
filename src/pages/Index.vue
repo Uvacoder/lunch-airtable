@@ -10,7 +10,7 @@
     <div class="slot-machine h-32 overflow-hidden w-full border-teal-500 border-2 relative">
       <ul class="slot-list absolute top-0 w-full" :class="{'running': isRunning}">
         <li v-for="(r, index) in slots" :key="`${r.id}-${index}`" class="flex items-center justify-center p-4 h-32">
-          <p class="slot-text font-bold leading-none">{{ r.name }}</p>
+          <p class="slot-text font-bold leading-none text-center">{{ r.name }}</p>
         </li>
       </ul>
       <div v-if="!slots.length" class="flex items-center justify-center p-4 h-32 relative">
@@ -125,7 +125,7 @@ export default {
   transition: 0s;
 }
 .slot-text {
-  font-size: clamp(2rem, 4vw + 1rem, 4rem);
+  font-size: clamp(1.75rem, 2.25vw + 1rem, 4rem);
 }
 .running {
   transform: translateY(calc(-100% + 8rem));
