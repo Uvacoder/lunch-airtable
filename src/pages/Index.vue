@@ -7,14 +7,14 @@
       Makint decisions is hard. Like really hard. If the team can't decide where to lunch, just let the lunch time slot machine do it.
     </p>
 
-    <div class="bg-green-100 h-32 overflow-hidden w-full border-teal-500 border-2 relative">
-      <component is="ul" ref="slotz" class="slot-list absolute top-0 w-full" :class="{'running': isRunning}">
-        <li v-for="(r, index) in slots" :key="`${r.id}-${index}`" class="flex items-center justify-center bg-white p-4 h-32">
-          <p class="text-6xl font-bold leading-none">{{ r.name }}</p>
+    <div class="slot-machine h-32 overflow-hidden w-full border-teal-500 border-2 relative">
+      <ul class="slot-list absolute top-0 w-full" :class="{'running': isRunning}">
+        <li v-for="(r, index) in slots" :key="`${r.id}-${index}`" class="flex items-center justify-center p-4 h-32">
+          <p class="slot-text font-bold leading-none">{{ r.name }}</p>
         </li>
-      </component>
-      <div v-if="!slots.length" class="flex items-center justify-center bg-white p-4 h-32 relative">
-        <p class="text-6xl font-bold leading-none text-teal-200 cursor-pointer" @click="runSlots">What's for Lunch?</p>
+      </ul>
+      <div v-if="!slots.length" class="flex items-center justify-center p-4 h-32 relative">
+        <p class="slot-text font-bold leading-none text-teal-500 cursor-pointer" @click="runSlots">What's for Lunch?</p>
       </div>
     </div>
 
@@ -124,11 +124,21 @@ export default {
 .slot-list {
   transition: 0s;
 }
+.slot-text {
+  font-size: clamp(2rem, 4vw + 1rem, 4rem);
+}
 .running {
   transform: translateY(calc(-100% + 8rem));
   transition: 5s ease-out;
 }
 :disabled {
-  background: #e1e3e8;
+  background: theme('colors.gray.100');
+}
+.dark :disabled {
+  background: theme('colors.gray.600');
+  color: theme('colors.gray.200');
+}
+.dark .slot-machine {
+  background: theme('colors.gray.800');
 }
 </style>

@@ -4,7 +4,7 @@
       <strong>
         <g-link to="/">{{ $static.metadata.siteName }}</g-link>
       </strong>
-      <div @click="switchMode" class="text-gray-500 hover:text-black dark-hover:text-white">
+      <div @click="switchMode" class="text-gray-black dark:text-300 hover:text-gray-400 dark-hover:text-white">
         <IconBase v-if="isDarkMode" icon-name="sun" fill="none" stroke="currentColor"><IconSun/></IconBase>
         <IconBase v-else icon-name="moon" fill="none" stroke="currentColor"><IconMoon/></IconBase>
       </div>
@@ -45,13 +45,13 @@ export default {
       this.isDarkMode =
         window.matchMedia &&
         window.matchMedia('(prefers-color-scheme: dark)').matches
-      this.setDarkMode()
+      this.setMode()
     },
     setMode() {
       if (this.isDarkMode) {
-        document.documentElement.classList.add('dark-mode')
+        document.documentElement.classList.add('dark')
       } else {
-        document.documentElement.classList.remove('dark-mode')
+        document.documentElement.classList.remove('dark')
       }
     },
     switchMode() {
@@ -70,9 +70,9 @@ body {
   padding:0;
   line-height: 1.5;
 }
-.dark-mode body{
+.dark body{
   background: theme('colors.gray.900');
-  color: theme('colors.gray.400');
+  color: theme('colors.gray.300');
 }
 
 .layout {
