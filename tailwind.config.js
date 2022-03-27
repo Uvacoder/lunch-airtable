@@ -1,9 +1,22 @@
 const plugin = require('tailwindcss/plugin')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
+  darkMode: 'class',
+  purge: {
+    content: [
+      './src/**/*.html',
+      './src/**/*.vue',
+      './src/**/*.js',
+      './src/**/*.md'
+    ]
+  },
   theme: {
-    darkSelector: 'dark-mode',
-    extend: {},
+    extend: {
+      colors: {
+        teal: colors.teal,
+      }
+    },
   },
   variants: {
     backgroundColor: ['responsive', 'hover', 'focus', 'dark', 'dark-hover', 'dark-group-hover', 'dark-focus', 'dark-focus-within', 'dark-active'],
