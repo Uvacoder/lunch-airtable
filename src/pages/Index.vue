@@ -4,7 +4,7 @@
     <h1>Lunch Time<span v-if="selectedRestaurant"> at {{ selectedRestaurant.name }}!</span></h1>
 
     <p class="mb-6">
-      Makint decisions is hard. Like really hard. If the team can't decide where to lunch, just let the lunch time slot machine do it.
+      Making decisions is hard. Like really hard. If the team can't decide where to lunch, just let the lunch time slot machine do it.
     </p>
 
     <div class="slot-machine h-32 overflow-hidden w-full border-teal-500 border-2 relative">
