@@ -1,7 +1,6 @@
 <template>
   <Layout>
-
-    <h1>Lunch Time<span v-if="selectedRestaurant"> at {{ selectedRestaurant.name }}!</span></h1>
+    <h1>It's lunch time<span v-if="selectedRestaurant"> at {{ selectedRestaurant.name }}!</span></h1>
 
     <p class="mb-6">
       Making decisions is hard. Like really hard. If the team can't decide where to lunch, just let the lunch time slot machine do it.
@@ -18,7 +17,7 @@
       </div>
     </div>
 
-    <button @click="runSlots" :disabled="isRunning">I'm Hungry</button>
+    <button @click="runSlots" :disabled="isRunning">{{ actionText }}</button>
 
   </Layout>
 </template>
@@ -63,6 +62,7 @@ export default {
       selectedRestaurant: null,
       pastSelections: [],
       slots: [],
+      actionText: "I'm Hungry",
     }
   },
   computed: {
@@ -113,6 +113,7 @@ export default {
         this.selectedRestaurant = slotsArray[selectedIndex]
         this.pastSelections.push(this.selectedRestaurant)
         this.slots = [this.selectedRestaurant]
+        this.actionText = "Nah, Something Else";
         this.isRunning = false
       }, 5000)
     }
@@ -129,7 +130,7 @@ export default {
 }
 .running {
   transform: translateY(calc(-100% + 8rem));
-  transition: 5s ease-out;
+  transition: 5s cubic-bezier(0.19, 0.97, 0.5, 1.005);
 }
 :disabled {
   background: theme('colors.gray.100');

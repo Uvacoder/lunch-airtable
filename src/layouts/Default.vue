@@ -9,7 +9,9 @@
         <IconBase v-else icon-name="moon" fill="none" stroke="currentColor"><IconMoon/></IconBase>
       </div>
     </header>
-    <slot/>
+    <main>
+      <slot/>
+    </main>
   </div>
 </template>
 
@@ -75,19 +77,22 @@ body {
   color: theme('colors.gray.300');
 }
 
-.layout {
-  max-width: 900px;
-  margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
+main {
+  box-sizing: content-box;
+  max-width: 75ch;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem;
+}
+main > * + * {
+  margin-top: var(--spacer, 1em);
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  height: 80px;
+  padding: 1rem;
 }
 
 .nav__link {
