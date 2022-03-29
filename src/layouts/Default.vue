@@ -1,9 +1,6 @@
 <template>
   <div class="layout">
     <header class="header">
-      <strong>
-        <g-link to="/">{{ $static.metadata.siteName }}</g-link>
-      </strong>
       <div @click="switchMode" class="text-gray-black dark:text-300 hover:text-gray-400 dark-hover:text-white">
         <IconBase v-if="isDarkMode" icon-name="sun" fill="none" stroke="currentColor"><IconSun/></IconBase>
         <IconBase v-else icon-name="moon" fill="none" stroke="currentColor"><IconMoon/></IconBase>
@@ -65,16 +62,37 @@ export default {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap");
+:root {
+  --primary: #5fb3b3;
+  --primary-lightest: #9be2e2;
+  --primary-light: #79c2c4;
+  --primary-dark: #1a8384;
+  --bg: #fff;
+  --ink: #0f1c23;
+  --ink-subtle: #343d46;
+  --timing-l: 5s;
+  --timing-s: 0.5s;
+}
+.dark {
+  --primary: #1a8384;
+  --primary-dark: #5fb3b3;
+  --bg: #0f1c23;
+  --ink: #fff;
+  --ink-subtle: #c2c7d0;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 body {
-  font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  color: theme('colors.gray.700');
+  background-color: var(--bg);
+  color: var(--ink-subtle);
+  font-family: "IBM Plex Sans", sans-serif;
   margin:0;
   padding:0;
   line-height: 1.5;
-}
-.dark body{
-  background: theme('colors.gray.900');
-  color: theme('colors.gray.300');
 }
 
 main {
@@ -82,20 +100,16 @@ main {
   max-width: 75ch;
   margin-left: auto;
   margin-right: auto;
-  padding: 2rem;
+  padding: max(1rem, 4vw);
 }
 main > * + * {
-  margin-top: var(--spacer, 1em);
+  margin-top: var(--spacer, 1.5em);
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding: 1rem;
-}
-
-.nav__link {
-  margin-left: 20px;
 }
 </style>

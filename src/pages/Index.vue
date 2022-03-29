@@ -1,24 +1,35 @@
 <template>
   <Layout>
-    <h1>It's lunch time<span v-if="selectedRestaurant"> at {{ selectedRestaurant.name }}!</span></h1>
+    <h1>
+      It's lunch time
+      <span v-if="selectedRestaurant">at {{ selectedRestaurant.name }}!</span>
+    </h1>
 
-    <p class="mb-6">
-      Making decisions is hard. Like really hard. If the team can't decide where to lunch, just let the lunch time slot machine do it.
+    <p>
+      Making decisions is hard, like really hard. So, if the team can't decide
+      where to go to lunch then just let the lunch time slot machine do it. It's
+      time for lunch, where are we going?
     </p>
 
-    <div class="slot-machine h-32 overflow-hidden w-full border-teal-500 border-2 relative">
-      <ul class="slot-list absolute top-0 w-full" :class="{'running': isRunning}">
-        <li v-for="(r, index) in slots" :key="`${r.id}-${index}`" class="flex items-center justify-center p-4 h-32">
-          <p class="slot-text font-bold leading-none text-center">{{ r.name }}</p>
+    <div class="slot-machine">
+      <ul class="slot-list" :class="{ running: isRunning }">
+        <li
+          v-for="(r, index) in slots"
+          :key="`${r.id}-${index}`"
+        >
+          <p class="slot-text">
+            {{ r.name }}
+          </p>
         </li>
       </ul>
-      <div v-if="!slots.length" class="flex items-center justify-center p-4 h-32 relative">
-        <p class="slot-text font-bold leading-none text-teal-500 cursor-pointer" @click="runSlots">What's for Lunch?</p>
-      </div>
+      <button v-if="!slots.length" class="slot-text starter" @click="runSlots">
+        What's for Lunch?
+      </button>
     </div>
 
-    <button @click="runSlots" :disabled="isRunning">{{ actionText }}</button>
-
+    <button class="trigger" @click="runSlots" :disabled="isRunning">
+      {{ actionText }}
+    </button>
   </Layout>
 </template>
 
@@ -122,24 +133,89 @@ export default {
 </script>
 
 <style>
+h1 {
+  color: var(--ink);
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+.slot-machine {
+  height: 8rem;
+  overflow: hidden;
+  border: 2px solid var(--primary);
+  position: relative;
+}
 .slot-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   transition: 0s;
 }
 .slot-text {
+  background: transparent;
+  border: none;
+  display: grid;
   font-size: clamp(1.75rem, 2.25vw + 1rem, 4rem);
+  font-weight: 700;
+  height: 8rem;
+  margin: 0;
+  place-content: center;
+  padding: 0;
+  text-align: center;
+  width: 100%;
 }
 .running {
   transform: translateY(calc(-100% + 8rem));
-  transition: 5s cubic-bezier(0.19, 0.97, 0.5, 1.005);
+  transition: var(--timing-l) cubic-bezier(0.19, 0.97, 0.5, 1.005);
 }
-:disabled {
-  background: theme('colors.gray.100');
+.starter {
+  color: var(--primary-light);
 }
-.dark :disabled {
-  background: theme('colors.gray.600');
-  color: theme('colors.gray.200');
+.trigger {
+  background-color: var(--primary);
+  backface-visibility: hidden;
+  border: none;
+  color: white;
+  display: flex;
+  font-size: 1.25rem;
+  font-weight: 700;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem;
+  perspective: 10000px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform var(--timing-s);
+  width: 15rem;
 }
-.dark .slot-machine {
-  background: theme('colors.gray.800');
+.trigger::before,
+.trigger::after {
+  background-color: var(--primary);
+  backface-visibility: hidden;
+  content: "";
+  display: block;
+  height: 1rem;
+  position: absolute;
+  top: 100%;
+  transform: rotateX(-90deg);
+  transform-origin: 50% 0%;
+  width: 100%;
+}
+.trigger::after {
+  background-color: var(--primary-dark);
+  transform: rotateX(-90deg) scaleX(0);
+  transition-delay: var(--timing-s);
+}
+.trigger:hover {
+  background-color: var(--primary-dark);
+}
+.trigger:disabled {
+  background-color: var(--primary-light);
+  transform: rotateX(90deg);
+}
+.trigger:disabled::after {
+  transform: rotateX(-90deg) scaleX(1);
+  transform-origin: 0 0;
+  transition: transform 4s linear var(--timing-s);
 }
 </style>
