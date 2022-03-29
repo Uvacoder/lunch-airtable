@@ -3,7 +3,6 @@
 
 // Changes here require a server restart.
 // To restart press CTRL + C in terminal and run `gridsome develop`
-const postCSSPlugins = [require(`tailwindcss`)(),require(`autoprefixer`)]
 require('dotenv').config()
 
 module.exports = {
@@ -28,11 +27,4 @@ module.exports = {
       },
     },
   ],
-  css: {
-    loaderOptions: {
-      postcss: {
-        plugins: postCSSPlugins,
-      },
-    },
-  },
 }
