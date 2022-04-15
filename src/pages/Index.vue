@@ -71,9 +71,7 @@ query LunchTime {
 
 <script>
 import JSConfetti from 'js-confetti'
-
-const jsConfetti = new JSConfetti()
-
+let jsConfetti
 export default {
   name: "Landing",
   metaInfo: {
@@ -112,6 +110,9 @@ export default {
         }
       })
     }
+  },
+  mounted() {
+    jsConfetti = new JSConfetti()
   },
   methods: {
     runSlots() {
