@@ -69,8 +69,10 @@ export default {
   --primary-light: #79c2c4;
   --primary-dark: #1a8384;
   --bg: #fff;
+  --bg-subtle: #f4f6f9;
   --ink: #0f1c23;
-  --ink-subtle: #343d46;
+  --ink-2: #343d46;
+  --ink-3: #65737e;
   --timing-l: 5s;
   --timing-s: 0.5s;
 }
@@ -78,8 +80,10 @@ export default {
   --primary: #1a8384;
   --primary-dark: #5fb3b3;
   --bg: #0f1c23;
+  --bg-subtle: #1b2b34;
   --ink: #fff;
-  --ink-subtle: #c2c7d0;
+  --ink-2: #c2c7d0;
+  --ink-3: #9bafbe;
 }
 *,
 *::before,
@@ -88,8 +92,9 @@ export default {
 }
 body {
   background-color: var(--bg);
-  color: var(--ink-subtle);
+  color: var(--ink-2);
   font-family: "IBM Plex Sans", sans-serif;
+  font-size: 1.125rem;
   margin:0;
   padding:0;
   line-height: 1.5;

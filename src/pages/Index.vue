@@ -1,8 +1,7 @@
 <template>
   <Layout>
     <h1>
-      It's lunch time
-      <span v-if="selectedRestaurant">at {{ selectedRestaurant.name }}!</span>
+      It's lunch time!
     </h1>
 
     <p>
@@ -12,7 +11,7 @@
     </p>
 
     <div class="slot-machine">
-      <ul class="slot-list" :class="{ running: isRunning }">
+      <ul class="slot-list" :class="{'running': isRunning}">
         <li
           v-for="(r, index) in slots"
           :key="`${r.id}-${index}`"
@@ -22,12 +21,22 @@
           </p>
         </li>
       </ul>
+      <button v-if="selectedRestaurant && !decisionMade" class="select-btn" @click="handleDecision">
+        Let's go here!
+      </button>
       <button v-if="!slots.length" class="slot-text starter" @click="runSlots">
         What's for Lunch?
       </button>
     </div>
 
-    <button class="trigger" @click="runSlots" :disabled="isRunning">
+    <div class="selected-info">
+      <p v-if="selectedRestaurant && selectedRestaurant.lastVisited">Visited: {{ selectedRestaurant.lastVisited }}</p>
+      <ul v-if="selectedRestaurant && selectedRestaurant.foodTypes" role="list">
+        <li v-for="style in selectedRestaurant.foodTypes">{{ style.name }}</li>
+      </ul>
+    </div>
+
+    <button v-if="!decisionMade" class="trigger" @click="runSlots" :disabled="isRunning">
       {{ actionText }}
     </button>
   </Layout>
@@ -40,7 +49,7 @@ query LunchTime {
       node {
         id
         name
-        lastVisited
+        lastVisited(format: "MMMM DD, YYYY")
         type
         foodType {
           id
@@ -61,6 +70,10 @@ query LunchTime {
 </page-query>
 
 <script>
+import JSConfetti from 'js-confetti'
+
+const jsConfetti = new JSConfetti()
+
 export default {
   name: "Landing",
   metaInfo: {
@@ -74,6 +87,7 @@ export default {
       pastSelections: [],
       slots: [],
       actionText: "I'm Hungry",
+      decisionMade: false,
     }
   },
   computed: {
@@ -102,31 +116,41 @@ export default {
   methods: {
     runSlots() {
       // clear the selected restaurant
-      this.selectedRestaurant = null
+      this.selectedRestaurant = null;
       // get the last item in past selections
-      const lastSelected = this.pastSelections[this.pastSelections.length - 1]
+      const lastSelected = this.pastSelections[this.pastSelections.length - 1];
       // filter out any items from the restaurant array that are in the past selections array
-      let slotsArray = this.inflatedRestaurants.filter(it => !this.pastSelections.find(past => past.id === it.id))
-      // get a randowm index from the slots array
-      const selectedIndex = Math.floor(Math.random() * slotsArray.length + 1)
+      let slotsArray = this.inflatedRestaurants.filter(it => !this.pastSelections.find(past => past.id === it.id));
+      // get a random index from the slots array
+      const selectedIndex = Math.floor(Math.random() * slotsArray.length);
       // get a version of the slots array trimmed to the selected restaurant
-      const trimmedSlotsArray = slotsArray.slice(0, selectedIndex + 1)
+      const trimmedSlotsArray = slotsArray.slice(0, selectedIndex + 1);
       // build out the scrolling list
-      let scrollSlotsArray = [...slotsArray, ...slotsArray]
+      let scrollSlotsArray = [...slotsArray, ...slotsArray];
       // if there is a last selected item, add it to the beginning of the list so the animation doesn't jump
-      if (lastSelected) scrollSlotsArray = [lastSelected, ...scrollSlotsArray]
+      if (lastSelected) scrollSlotsArray = [lastSelected, ...scrollSlotsArray];
       // set the slots array for the UI
-      this.slots = [...scrollSlotsArray, ...trimmedSlotsArray]
+      this.slots = [...scrollSlotsArray, ...trimmedSlotsArray];
       // run the animation
-      this.isRunning = true
+      this.isRunning = true;
       // after the animation is done, set the selected restaurant, push to past selections, reset the slots array, and stop the animation
       setTimeout(() => {
-        this.selectedRestaurant = slotsArray[selectedIndex]
-        this.pastSelections.push(this.selectedRestaurant)
-        this.slots = [this.selectedRestaurant]
+        this.selectedRestaurant = slotsArray[selectedIndex];
+        this.pastSelections.push(this.selectedRestaurant);
+        this.slots = [this.selectedRestaurant];
         this.actionText = "Nah, Something Else";
-        this.isRunning = false
-      }, 5000)
+        this.isRunning = false;
+      }, 5000);
+    },
+    handleDecision() {
+      this.decisionMade = true;
+      this.throwConfetti();
+    },
+    throwConfetti() {
+      jsConfetti.addConfetti({
+        emojis: ['🍕', '🍔', '🌭', '🌮', '🥨', '🍟', '🥞', '🥦', '🍓', '🍉', '🥐', '🌶', '🍫', '🍩', '🧁', '🍭', '🍬', '🥩', '🧇', '🥖', '🧀', '🍗', '🥕', '🥑', '🍢', '🍡', '🍦', '🍰', '🍪', '🍎', '🍋', '🍒', '🍇', '🍉', '🍍', '🍠', '🌽'],
+        confettiNumber: 150,
+      });
     }
   }
 }
@@ -144,11 +168,13 @@ h1 {
   border: 2px solid var(--primary);
   position: relative;
 }
+
 .slot-list {
   list-style: none;
   margin: 0;
   padding: 0;
   transition: 0s;
+  will-change: transform;
 }
 .slot-text {
   background: transparent;
@@ -171,6 +197,7 @@ h1 {
   color: var(--primary-light);
 }
 .trigger {
+  --spacer: 1rem;
   background-color: var(--primary);
   backface-visibility: hidden;
   border: none;
@@ -217,5 +244,49 @@ h1 {
   transform: rotateX(-90deg) scaleX(1);
   transform-origin: 0 0;
   transition: transform 4s linear var(--timing-s);
+}
+
+.select-btn {
+  background-color: rgb(26 131 132 / 0.7);
+  backdrop-filter: blur(4px);
+  border: none;
+  color: white;
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  inset: 0;
+  margin: 0 auto;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  padding: 1rem;
+  transition: opacity var(--timing-s);
+  will-change: opacity;
+}
+
+.slot-machine:hover .select-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.selected-info {
+  --spacer: 0.5rem;
+  color: var(--ink-3);
+  display: flex;
+  gap: 1.25rem;
+  height: 30px;
+}
+.selected-info ul {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  margin-left: auto;
+  padding: 0;
+}
+.selected-info li {
+  background-color: var(--bg-subtle);
+  border-radius: 0.325rem;
+  padding: 0.125rem 0.325rem;
 }
 </style>
