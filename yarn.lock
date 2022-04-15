@@ -5329,6 +5329,11 @@ jest-worker@24.0.0:
     merge-stream "^1.0.1"
     supports-color "^6.1.0"
 
+js-confetti@^0.10.2:
+  version "0.10.2"
+  resolved "https://artifactory.wwt.com/artifactory/api/npm/npm/js-confetti/-/js-confetti-0.10.2.tgz#f30aab309735284d5694845f24a6a3a3d4221984"
+  integrity sha1-8wqrMJc1KE1WlIRfJKajo9QiGYQ=
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
