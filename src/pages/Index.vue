@@ -155,7 +155,6 @@ export default {
     async handleDecision() {
       try {
         const today = new Date().toISOString().slice(0, 10);
-        console.log(today)
         await fetch('/api/updateRestaurant', {
           method: 'PUT',
           body: JSON.stringify({ "id": this.selectedRestaurant.id, "Last Visited": today }),
@@ -293,6 +292,15 @@ h1 {
   padding: 1rem;
   transition: opacity var(--timing-s);
   will-change: opacity;
+}
+
+@media screen and (max-width: 560px) {
+  .select-btn {
+    background-color: rgb(26 131 132 / 0.7);
+    opacity: 1;
+    padding: 0.325rem;
+    top: auto;
+  }
 }
 
 .slot-machine:hover .select-btn,
