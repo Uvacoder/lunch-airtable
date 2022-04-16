@@ -4,7 +4,7 @@
       It's lunch time!
     </h1>
 
-    <p>
+    <p class="description">
       Making decisions is hard, like really hard. So, if the team can't decide
       where to go to lunch then just let the lunch time slot machine do it. It's
       time for lunch, where are we going?
@@ -39,6 +39,13 @@
     <button v-if="!decisionMade" class="trigger" @click="runSlots" :disabled="isRunning">
       {{ actionText }}
     </button>
+    <div v-else class="flow restaurant-info">
+      <h2>Wonderful</h2>
+      <p>You're going to {{ selectedRestaurant.name }}! You should be proud of yourself for making a decision.</p>
+      <a v-if="selectedRestaurant && selectedRestaurant.menuLink" :href="selectedRestaurant.menuLink" target="_blank">
+        Check out the menu
+      </a>
+    </div>
   </Layout>
 </template>
 
@@ -50,6 +57,7 @@ query LunchTime {
         id
         name
         lastVisited(format: "MMMM DD, YYYY")
+        menuLink
         type
         foodType {
           id
@@ -103,6 +111,7 @@ export default {
           id: it.node.id,
           name: it.node.name,
           lastVisited: it.node.lastVisited,
+          menuLink: it.node.menuLink,
           type: it.node.type,
           foodTypes: it.node.type.map(it => {
             return this.typeList.find(item => item.id === it)
@@ -143,9 +152,19 @@ export default {
         this.isRunning = false;
       }, 5000);
     },
-    handleDecision() {
-      this.decisionMade = true;
-      this.throwConfetti();
+    async handleDecision() {
+      try {
+        const today = new Date().toISOString().slice(0, 10);
+        console.log(today)
+        await fetch('/api/updateRestaurant', {
+          method: 'PUT',
+          body: JSON.stringify({ "id": this.selectedRestaurant.id, "Last Visited": today }),
+        });
+        this.decisionMade = true;
+        this.throwConfetti();
+      } catch (err) {
+        console.error(err);
+      }
     },
     throwConfetti() {
       jsConfetti.addConfetti({
@@ -160,13 +179,18 @@ export default {
 <style>
 h1 {
   color: var(--ink);
-  font-size: 1.75rem;
+  font-size: 2.5rem;
   font-weight: 700;
 }
+.description {
+  --spacer: 0.5rem;
+}
 .slot-machine {
+  --spacer: 3.5rem;
+  box-sizing: content-box;
   height: 8rem;
-  overflow: hidden;
   border: 2px solid var(--primary);
+  overflow: hidden;
   position: relative;
 }
 
@@ -181,6 +205,7 @@ h1 {
   background: transparent;
   border: none;
   display: grid;
+
   font-size: clamp(1.75rem, 2.25vw + 1rem, 4rem);
   font-weight: 700;
   height: 8rem;
@@ -196,6 +221,11 @@ h1 {
 }
 .starter {
   color: var(--primary-light);
+}
+.starter:hover, .starter:focus-visible {
+  background: hsl(182deg 39% 62% / 0.2);
+  color: var(--primary-dark);
+  outline-offset: -6px;
 }
 .trigger {
   --spacer: 1rem;
@@ -265,7 +295,8 @@ h1 {
   will-change: opacity;
 }
 
-.slot-machine:hover .select-btn {
+.slot-machine:hover .select-btn,
+.select-btn:focus-visible {
   opacity: 1;
   pointer-events: auto;
 }
@@ -289,5 +320,9 @@ h1 {
   background-color: var(--bg-subtle);
   border-radius: 0.325rem;
   padding: 0.125rem 0.325rem;
+}
+
+.restaurant-info {
+  --spacer: 0.5rem;
 }
 </style>

@@ -1,10 +1,10 @@
 <template>
   <div class="layout">
     <header class="header">
-      <div @click="switchMode" class="text-gray-black dark:text-300 hover:text-gray-400 dark-hover:text-white">
-        <IconBase v-if="isDarkMode" icon-name="sun" fill="none" stroke="currentColor"><IconSun/></IconBase>
-        <IconBase v-else icon-name="moon" fill="none" stroke="currentColor"><IconMoon/></IconBase>
-      </div>
+      <button @click="switchMode" aria-label="Color Mode Toggle" :aria-pressed="isDarkMode ? 'true' : 'false'" class="dark-toggle">
+        <IconBase v-if="isDarkMode" icon-name="sun" fill="none" stroke="currentColor" width="24" height="24"><IconSun/></IconBase>
+        <IconBase v-else icon-name="moon" fill="none" stroke="currentColor" width="24" height="24"><IconMoon/></IconBase>
+      </button>
     </header>
     <main>
       <slot/>
@@ -68,6 +68,7 @@ export default {
   --primary-lightest: #9be2e2;
   --primary-light: #79c2c4;
   --primary-dark: #1a8384;
+  --secondary: #a78bfa;
   --bg: #fff;
   --bg-subtle: #f4f6f9;
   --ink: #0f1c23;
@@ -79,6 +80,7 @@ export default {
 .dark {
   --primary: #1a8384;
   --primary-dark: #5fb3b3;
+  --secondary: #fac863;
   --bg: #0f1c23;
   --bg-subtle: #1b2b34;
   --ink: #fff;
@@ -100,6 +102,15 @@ body {
   line-height: 1.5;
 }
 
+a:not([class]) {
+  color: var(--primary-dark);
+  text-decoration-color: var(--secondary);
+  text-underline-offset: 0.25em;
+}
+a:not([class]):hover {
+  text-decoration-style: wavy;
+}
+
 main {
   box-sizing: content-box;
   max-width: 75ch;
@@ -107,7 +118,7 @@ main {
   margin-right: auto;
   padding: max(1rem, 4vw);
 }
-main > * + * {
+main > * + *, .flow > * + * {
   margin-top: var(--spacer, 1.5em);
 }
 
@@ -116,5 +127,22 @@ main > * + * {
   justify-content: flex-end;
   align-items: center;
   padding: 1rem;
+}
+button:focus-visible, a:focus-visible {
+  outline-color: var(--primary);
+  outline-offset: 0.25rem;
+  outline-style: solid;
+  outline-width: 2px;
+}
+.dark-toggle {
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--ink-3);
+  display: flex;
+  padding: 0.125rem;
+}
+.dark-toggle:hover {
+  color: var(--ink);
 }
 </style>
