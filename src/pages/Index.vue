@@ -277,7 +277,7 @@ h1 {
 }
 
 .select-btn {
-  background-color: rgb(26 131 132 / 0.7);
+  background-color: rgb(26 131 132 / 0.95);
   backdrop-filter: blur(4px);
   border: none;
   color: white;
@@ -293,6 +293,12 @@ h1 {
   transition: opacity var(--timing-s);
   width: 100%;
   will-change: opacity;
+}
+
+@supports (backdrop-filter: none) {
+  .select-btn {
+    background-color: rgb(26 131 132 / 0.7);
+  }
 }
 
 @media screen and (max-width: 560px) {
