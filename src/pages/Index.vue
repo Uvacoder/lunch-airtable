@@ -291,6 +291,7 @@ h1 {
   position: absolute;
   padding: 1rem;
   transition: opacity var(--timing-s);
+  width: 100%;
   will-change: opacity;
 }
 
