@@ -143,7 +143,7 @@ export default {
       this.slots = [...scrollSlotsArray, ...trimmedSlotsArray];
       // run the animation
       this.isRunning = true;
-      // after the animation is done, set the selected restaurant, push to past selections, reset the slots array, and stop the animation
+      // after the animation is done: set the selected restaurant, push to past selections, reset the slots array, and stop the animation
       setTimeout(() => {
         this.selectedRestaurant = slotsArray[selectedIndex];
         this.pastSelections.push(this.selectedRestaurant);
@@ -153,16 +153,17 @@ export default {
       }, 5000);
     },
     async handleDecision() {
+      const today = new Date().toISOString().slice(0, 10);
       try {
-        const today = new Date().toISOString().slice(0, 10);
-        await fetch('/api/updateRestaurant', {
+        const res = await fetch('/api/updateRestaurant', {
           method: 'PUT',
           body: JSON.stringify({ "id": this.selectedRestaurant.id, "Last Visited": today }),
-        });
+        })
+        if (!res.ok) throw new Error(res.statusText);
         this.decisionMade = true;
         this.throwConfetti();
       } catch (err) {
-        console.error(err);
+        console.error(err)
       }
     },
     throwConfetti() {
