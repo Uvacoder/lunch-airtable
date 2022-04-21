@@ -314,7 +314,7 @@ h2 {
   display: flex;
   font-size: clamp(0.80rem, calc(0.66rem + 0.69vw), 1.05rem);
   gap: 1.25rem;
-  height: 30px;
+  height: 1.75em;
 }
 .selected-meta ul {
   display: flex;
