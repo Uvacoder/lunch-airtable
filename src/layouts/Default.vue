@@ -104,6 +104,11 @@ body {
   line-height: 1.5;
 }
 
+::selection {
+  background-color: rgba(250, 200, 99, .99);
+  color: #0f1c23;
+}
+
 a:not([class]) {
   color: var(--primary-dark);
   text-decoration-color: var(--secondary);
