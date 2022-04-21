@@ -9,8 +9,7 @@
       where to go to lunch then just let the lunch time slot machine do it. It's
       time for lunch, where are we going?
     </p>
-
-    <div class="slot-machine">
+    <div class="slot-machine" :class="{ 'error': updateFailed }">
       <ul class="slot-list" :class="{'running': isRunning}">
         <li
           v-for="(r, index) in slots"
@@ -21,25 +20,30 @@
           </p>
         </li>
       </ul>
-      <button v-if="selectedRestaurant && !decisionMade" class="select-btn" @click="handleDecision">
-        Let's go here!
+      <button v-if="selectedRestaurant && !decisionMade && !updateFailed" class="select-btn" @click="handleDecision">
+        <span v-if="!isUpdating">Let's go here!</span>
+        <Pizza class="spinner" v-else />
       </button>
       <button v-if="!slots.length" class="slot-text starter" @click="runSlots">
         What's for Lunch?
       </button>
     </div>
 
-    <div class="selected-info">
+    <div class="selected-meta">
       <p v-if="selectedRestaurant && selectedRestaurant.lastVisited">Visited: {{ selectedRestaurant.lastVisited }}</p>
       <ul v-if="selectedRestaurant && selectedRestaurant.foodTypes" role="list">
         <li v-for="style in selectedRestaurant.foodTypes">{{ style.name }}</li>
       </ul>
     </div>
 
-    <button v-if="!decisionMade" class="trigger" @click="runSlots" :disabled="isRunning">
+    <button v-if="!decisionMade && !updateFailed" class="trigger" @click="runSlots" :disabled="isRunning">
       {{ actionText }}
     </button>
-    <div v-else class="flow restaurant-info">
+    <div v-else-if="updateFailed" class="flow confirmation error-msg">
+      <h2>Whoops</h2>
+      <p>Looks like something is broken. Please try again later.</p>
+    </div>
+    <div v-else class="flow confirmation">
       <h2>Wonderful</h2>
       <p>You're going to {{ selectedRestaurant.name }}! You should be proud of yourself for making a decision.</p>
       <a v-if="selectedRestaurant && selectedRestaurant.menuLink" :href="selectedRestaurant.menuLink" target="_blank">
@@ -78,12 +82,16 @@ query LunchTime {
 </page-query>
 
 <script>
+import Pizza from '~/components/Pizza.vue'
 import JSConfetti from 'js-confetti'
 let jsConfetti
 export default {
   name: "Landing",
   metaInfo: {
     title: 'It\'s Lunch Time!'
+  },
+  components: {
+    Pizza,
   },
   data() {
     return {
@@ -93,7 +101,9 @@ export default {
       pastSelections: [],
       slots: [],
       actionText: "I'm Hungry",
+      isUpdating: false,
       decisionMade: false,
+      updateFailed: false,
     }
   },
   computed: {
@@ -153,6 +163,7 @@ export default {
       }, 5000);
     },
     async handleDecision() {
+      this.isUpdating = true;
       const today = new Date().toISOString().slice(0, 10);
       try {
         const res = await fetch('/api/updateRestaurant', {
@@ -161,8 +172,11 @@ export default {
         })
         if (!res.ok) throw new Error(res.statusText);
         this.decisionMade = true;
+        this.isUpdating = true;
         this.throwConfetti();
       } catch (err) {
+        this.isUpdating = false;
+        this.updateFailed = true;
         console.error(err)
       }
     },
@@ -179,12 +193,20 @@ export default {
 <style>
 h1 {
   color: var(--ink);
-  font-size: 2.5rem;
+  font-size: clamp(2.44rem, calc(2.02rem + 2.11vw), 3.20rem);
+  font-weight: 700;
+}
+h2 {
+  color: var(--ink);
+  font-size: clamp(1.95rem, calc(1.62rem + 1.68vw), 2.56rem);
   font-weight: 700;
 }
 .description {
   --spacer: 0.5rem;
 }
+/* ---
+  Slot Machine
+--- */
 .slot-machine {
   --spacer: 3.5rem;
   box-sizing: content-box;
@@ -192,6 +214,9 @@ h1 {
   border: 2px solid var(--primary);
   overflow: hidden;
   position: relative;
+}
+.slot-machine.error {
+  border: 2px solid var(--error);
 }
 
 .slot-list {
@@ -205,8 +230,7 @@ h1 {
   background: transparent;
   border: none;
   display: grid;
-
-  font-size: clamp(1.75rem, 2.25vw + 1rem, 4rem);
+  font-size: clamp(1.7rem, 2.25vw + 1.25rem, 4rem);
   font-weight: 700;
   height: 8rem;
   margin: 0;
@@ -227,6 +251,88 @@ h1 {
   color: var(--primary-dark);
   outline-offset: -6px;
 }
+
+/* ---
+  Select Button
+--- */
+.select-btn {
+  background-color: rgb(26 131 132 / 0.95);
+  backdrop-filter: blur(4px);
+  border: none;
+  color: white;
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  inset: 0;
+  margin: 0 auto;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  padding: 1rem;
+  transition: opacity var(--timing-s);
+  width: 100%;
+  will-change: opacity;
+}
+
+@supports (backdrop-filter: none) {
+  .select-btn {
+    background-color: rgb(26 131 132 / 0.7);
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .select-btn {
+    background-color: rgb(26 131 132 / 0.7);
+    opacity: 1;
+    padding: 0.325rem;
+    top: auto;
+  }
+}
+
+.slot-machine:hover .select-btn,
+.select-btn:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.spinner {
+  animation: spin infinite var(--timing-s) linear;
+  will-change: transform;
+}
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---
+  Meta Info
+--- */
+.selected-meta {
+  --spacer: 0.5rem;
+  color: var(--ink-3);
+  display: flex;
+  font-size: clamp(0.80rem, calc(0.66rem + 0.69vw), 1.05rem);
+  gap: 1.25rem;
+  height: 30px;
+}
+.selected-meta ul {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  margin-left: auto;
+  padding: 0;
+}
+.selected-meta li {
+  background-color: var(--bg-subtle);
+  border-radius: 0.325rem;
+  padding: 0.125rem 0.325rem;
+}
+
+/* ---
+  Trigger Button
+--- */
 .trigger {
   --spacer: 1rem;
   background-color: var(--primary);
@@ -277,68 +383,13 @@ h1 {
   transition: transform 4s linear var(--timing-s);
 }
 
-.select-btn {
-  background-color: rgb(26 131 132 / 0.95);
-  backdrop-filter: blur(4px);
-  border: none;
-  color: white;
-  display: block;
-  font-size: 1.25rem;
-  font-weight: 700;
-  inset: 0;
-  margin: 0 auto;
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  padding: 1rem;
-  transition: opacity var(--timing-s);
-  width: 100%;
-  will-change: opacity;
-}
-
-@supports (backdrop-filter: none) {
-  .select-btn {
-    background-color: rgb(26 131 132 / 0.7);
-  }
-}
-
-@media screen and (max-width: 560px) {
-  .select-btn {
-    background-color: rgb(26 131 132 / 0.7);
-    opacity: 1;
-    padding: 0.325rem;
-    top: auto;
-  }
-}
-
-.slot-machine:hover .select-btn,
-.select-btn:focus-visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.selected-info {
+/* ---
+  Confirmation
+--- */
+.confirmation {
   --spacer: 0.5rem;
-  color: var(--ink-3);
-  display: flex;
-  gap: 1.25rem;
-  height: 30px;
 }
-.selected-info ul {
-  display: flex;
-  gap: 0.5rem;
-  list-style: none;
-  margin: 0;
-  margin-left: auto;
-  padding: 0;
-}
-.selected-info li {
-  background-color: var(--bg-subtle);
-  border-radius: 0.325rem;
-  padding: 0.125rem 0.325rem;
-}
-
-.restaurant-info {
-  --spacer: 0.5rem;
+.error-msg h2{
+  color: var(--error);
 }
 </style>

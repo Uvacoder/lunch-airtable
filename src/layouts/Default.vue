@@ -69,6 +69,7 @@ export default {
   --primary-light: #79c2c4;
   --primary-dark: #1a8384;
   --secondary: #a78bfa;
+  --error: #b3545e;
   --bg: #fff;
   --bg-subtle: #f4f6f9;
   --ink: #0f1c23;
@@ -81,6 +82,7 @@ export default {
   --primary: #1a8384;
   --primary-dark: #5fb3b3;
   --secondary: #fac863;
+  --error: #ed6f7d;
   --bg: #0f1c23;
   --bg-subtle: #1b2b34;
   --ink: #fff;
@@ -96,7 +98,7 @@ body {
   background-color: var(--bg);
   color: var(--ink-2);
   font-family: "IBM Plex Sans", sans-serif;
-  font-size: 1.125rem;
+  font-size: clamp(1.13rem, calc(1.02rem + 0.52vw), 1.31rem);
   margin:0;
   padding:0;
   line-height: 1.5;
