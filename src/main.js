@@ -8,6 +8,24 @@ export default function (Vue, { router, head, isClient }) {
   // Set default layout as a global component
   Vue.component('Layout', DefaultLayout)
 
+  head.link.push({
+    rel: 'preconnect',
+    href: 'https://fonts.gstatic.com/',
+    crossOrigin: 'anonymous'
+  })
+  head.link.push({
+    rel: 'preload',
+    href: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap',
+    as: 'style',
+    crossOrigin: 'anonymous'
+  })
+  head.link.push({
+    rel: 'stylesheet',
+    href: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap',
+    as: 'style',
+    crossOrigin: 'anonymous'
+  })
+
   head.meta.push({
     key: 'og:title',
     name: 'og:title',
