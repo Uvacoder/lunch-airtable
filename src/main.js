@@ -27,6 +27,11 @@ export default function (Vue, { router, head, isClient }) {
   })
 
   head.meta.push({
+    key: 'theme-color',
+    name: 'theme-color',
+    content: `#0f1c23`,
+  })
+  head.meta.push({
     key: 'og:title',
     name: 'og:title',
     content: `Lunch Time Slots`,
