@@ -2,7 +2,7 @@
   <Layout>
     <section class="flow">
       <h1>It's lunch time!</h1>
-      <p class="summary">
+      <p>
         Making decisions is hard, like really hard. So, if the team can't decide
         where to go to lunch then just let the lunch time slot machine do it. It's
         time for lunch, where are we going?
@@ -36,20 +36,20 @@
       </ul>
     </div>
 
-    <button v-if="!decisionMade && !updateFailed" class="trigger" @click="runSlots" :disabled="isRunning">
-      {{ actionText }}
-    </button>
-    <section v-else-if="updateFailed" class="flow confirmation error-msg" aria-label="error info">
-      <h2>Whoops</h2>
-      <p>Looks like something is broken. Please try again later.</p>
-    </section>
-    <section v-else class="flow confirmation" aria-label="restaurant info">
+    <section v-if="decisionMade" class="flow confirmation" aria-label="restaurant info">
       <h2>Wonderful</h2>
       <p>You're going to {{ selectedRestaurant.name }}! You should be proud of yourself for making a decision.</p>
       <a v-if="selectedRestaurant && selectedRestaurant.menuLink" :href="selectedRestaurant.menuLink" target="_blank">
         Check out the menu
       </a>
     </section>
+    <section v-else-if="updateFailed" class="flow confirmation error-msg" aria-label="error info">
+      <h2>Whoops</h2>
+      <p>Looks like something is broken. Please try again later.</p>
+    </section>
+    <button v-else class="trigger" @click="runSlots" :disabled="isRunning">
+      {{ actionText }}
+    </button>
   </Layout>
 </template>
 
@@ -360,7 +360,7 @@ export default {
 }
 
 /* ---
-  Confirmation
+  Error Message
 --- */
 .error-msg h2{
   color: var(--error);
