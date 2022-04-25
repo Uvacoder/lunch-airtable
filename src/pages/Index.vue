@@ -1,14 +1,14 @@
 <template>
   <Layout>
-    <h1>
-      It's lunch time!
-    </h1>
+    <section class="flow">
+      <h1>It's lunch time!</h1>
+      <p class="summary">
+        Making decisions is hard, like really hard. So, if the team can't decide
+        where to go to lunch then just let the lunch time slot machine do it. It's
+        time for lunch, where are we going?
+      </p>
+    </section>
 
-    <p class="description">
-      Making decisions is hard, like really hard. So, if the team can't decide
-      where to go to lunch then just let the lunch time slot machine do it. It's
-      time for lunch, where are we going?
-    </p>
     <div class="slot-machine" :class="{ 'error': updateFailed }">
       <ul class="slot-list" :class="{'running': isRunning}">
         <li
@@ -39,17 +39,17 @@
     <button v-if="!decisionMade && !updateFailed" class="trigger" @click="runSlots" :disabled="isRunning">
       {{ actionText }}
     </button>
-    <div v-else-if="updateFailed" class="flow confirmation error-msg">
+    <section v-else-if="updateFailed" class="flow confirmation error-msg" aria-label="error info">
       <h2>Whoops</h2>
       <p>Looks like something is broken. Please try again later.</p>
-    </div>
-    <div v-else class="flow confirmation">
+    </section>
+    <section v-else class="flow confirmation" aria-label="restaurant info">
       <h2>Wonderful</h2>
       <p>You're going to {{ selectedRestaurant.name }}! You should be proud of yourself for making a decision.</p>
       <a v-if="selectedRestaurant && selectedRestaurant.menuLink" :href="selectedRestaurant.menuLink" target="_blank">
         Check out the menu
       </a>
-    </div>
+    </section>
   </Layout>
 </template>
 
@@ -82,7 +82,7 @@ query LunchTime {
 </page-query>
 
 <script>
-import Pizza from '~/components/Pizza.vue'
+import Pizza from '~/components/PizzaLoader.vue'
 import JSConfetti from 'js-confetti'
 let jsConfetti
 export default {
@@ -191,19 +191,6 @@ export default {
 </script>
 
 <style>
-h1 {
-  color: var(--ink);
-  font-size: clamp(2.44rem, calc(2.02rem + 2.11vw), 3.20rem);
-  font-weight: 700;
-}
-h2 {
-  color: var(--ink);
-  font-size: clamp(1.95rem, calc(1.62rem + 1.68vw), 2.56rem);
-  font-weight: 700;
-}
-.description {
-  --spacer: 0.5rem;
-}
 /* ---
   Slot Machine
 --- */
@@ -295,16 +282,6 @@ h2 {
   pointer-events: auto;
 }
 
-.spinner {
-  animation: spin infinite var(--timing-s) linear;
-  will-change: transform;
-}
-@keyframes spin {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 /* ---
   Meta Info
 --- */
@@ -334,7 +311,6 @@ h2 {
   Trigger Button
 --- */
 .trigger {
-  --spacer: 1rem;
   background-color: var(--primary);
   backface-visibility: hidden;
   border: none;
@@ -386,9 +362,6 @@ h2 {
 /* ---
   Confirmation
 --- */
-.confirmation {
-  --spacer: 0.5rem;
-}
 .error-msg h2{
   color: var(--error);
 }

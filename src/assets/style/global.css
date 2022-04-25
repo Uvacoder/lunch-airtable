@@ -1,0 +1,78 @@
+:root {
+  --primary: #5fb3b3;
+  --primary-lightest: #9be2e2;
+  --primary-light: #79c2c4;
+  --primary-dark: #1a8384;
+  --secondary: #a78bfa;
+  --error: #b3545e;
+  --bg: #fff;
+  --bg-subtle: #f4f6f9;
+  --ink: #0f1c23;
+  --ink-2: #343d46;
+  --ink-3: #65737e;
+  --timing-l: 5s;
+  --timing-s: 0.5s;
+}
+.dark {
+  --primary: #1a8384;
+  --primary-dark: #5fb3b3;
+  --secondary: #fac863;
+  --error: #ed6f7d;
+  --bg: #0f1c23;
+  --bg-subtle: #1b2b34;
+  --ink: #fff;
+  --ink-2: #c2c7d0;
+  --ink-3: #9bafbe;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink-2);
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: clamp(1.13rem, calc(1.02rem + 0.52vw), 1.31rem);
+  margin:0;
+  padding:0;
+  line-height: 1.5;
+}
+
+h1, h2, h3 {
+  line-height: 1.1;
+}
+
+h1 {
+  color: var(--ink);
+  font-size: clamp(2.44rem, calc(2.02rem + 2.11vw), 3.20rem);
+  font-weight: 700;
+}
+h2 {
+  color: var(--ink);
+  font-size: clamp(1.95rem, calc(1.62rem + 1.68vw), 2.56rem);
+  font-weight: 700;
+}
+
+::selection {
+  background-color: rgba(250, 200, 99, .99);
+  color: #0f1c23;
+}
+
+/* ---
+ Links
+--- */
+a:not([class]) {
+  color: var(--primary-dark);
+  text-decoration-color: var(--secondary);
+  text-underline-offset: 0.25em;
+}
+a:not([class]):hover {
+  text-decoration-style: wavy;
+}
+
+/* ---
+ Accessibility
+--- */
+button:focus-visible, a:focus-visible {
+  outline-color: var(--primary);
+  outline-offset: 0.25rem;
+  outline-style: solid;
+  outline-width: 2px;
+}

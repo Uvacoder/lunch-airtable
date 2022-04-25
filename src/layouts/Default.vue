@@ -6,7 +6,7 @@
         <IconBase v-else icon-name="moon" fill="none" stroke="currentColor" width="24" height="24"><IconMoon/></IconBase>
       </button>
     </header>
-    <main>
+    <main class="flow">
       <slot/>
     </main>
   </div>
@@ -57,22 +57,18 @@ export default {
 /* ---
  Layout
 --- */
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem;
+}
 main {
   box-sizing: content-box;
   max-width: 75ch;
   margin-left: auto;
   margin-right: auto;
   padding: max(1rem, 4vw);
-}
-main > * + *, .flow > * + * {
-  margin-top: var(--spacer, 1.5em);
-}
-
-.header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 1rem;
 }
 
 /* ---
