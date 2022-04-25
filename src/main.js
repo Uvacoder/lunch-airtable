@@ -9,20 +9,15 @@ export default function (Vue, { router, head, isClient }) {
   Vue.component('Layout', DefaultLayout)
 
   head.link.push({
-    rel: 'preconnect',
-    href: 'https://fonts.gstatic.com/',
+    rel: 'preload',
+    href: '/assets/fonts/ibm-plex-sans-v13-latin-700.woff2',
+    as: 'font',
     crossOrigin: 'anonymous'
   })
   head.link.push({
     rel: 'preload',
-    href: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap',
-    as: 'style',
-    crossOrigin: 'anonymous'
-  })
-  head.link.push({
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,700&display=swap',
-    as: 'style',
+    href: '/assets/fonts/ibm-plex-sans-v13-latin-regular.woff2',
+    as: 'font',
     crossOrigin: 'anonymous'
   })
 
