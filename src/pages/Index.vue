@@ -7,7 +7,6 @@
         where to go to lunch then just let the lunch time slot machine do it. It's
         time for lunch, where are we going?
       </p>
-      <div role="status" class="visually-hidden" aria-live="assertive" tabindex="-1">{{ liveRegion }}</div>
     </section>
 
     <div class="slot-machine" :class="{ 'error': updateFailed }">
@@ -51,6 +50,7 @@
     <button v-else class="trigger" @click="runSlots" :disabled="isRunning">
       {{ actionText }}
     </button>
+    <div role="status" class="visually-hidden" aria-live="assertive">{{ liveRegion }}</div>
   </Layout>
 </template>
 
