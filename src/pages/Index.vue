@@ -7,9 +7,13 @@
         where to go to lunch then just let the lunch time slot machine do it. It's
         time for lunch, where are we going?
       </p>
+      <div role="status" class="visually-hidden" aria-live="assertive" tabindex="-1">{{ liveRegion }}</div>
     </section>
 
     <div class="slot-machine" :class="{ 'error': updateFailed }">
+      <button v-if="!slots.length" class="slot-text starter" @click="runSlots">
+        What's for Lunch?
+      </button>
       <ul class="slot-list" :class="{'running': isRunning}">
         <li
           v-for="(r, index) in slots"
@@ -23,9 +27,6 @@
       <button v-if="selectedRestaurant && !decisionMade && !updateFailed" class="select-btn" @click="handleDecision">
         <span v-if="!isUpdating">Let's go here!</span>
         <Pizza class="spinner" v-else />
-      </button>
-      <button v-if="!slots.length" class="slot-text starter" @click="runSlots">
-        What's for Lunch?
       </button>
     </div>
 
@@ -95,14 +96,15 @@ export default {
   },
   data() {
     return {
+      actionText: "I'm Hungry",
+      decisionMade: false,
       isRunning: false,
+      isUpdating: false,
+      liveRegion: '',
+      pastSelections: [],
       selectedIndex: 0,
       selectedRestaurant: null,
-      pastSelections: [],
       slots: [],
-      actionText: "I'm Hungry",
-      isUpdating: false,
-      decisionMade: false,
       updateFailed: false,
     }
   },
@@ -135,6 +137,7 @@ export default {
   },
   methods: {
     runSlots() {
+      this.liveRegion = `Cycling through restaurants`;
       // clear the selected restaurant
       this.selectedRestaurant = null;
       // get the last item in past selections
@@ -159,6 +162,7 @@ export default {
         this.pastSelections.push(this.selectedRestaurant);
         this.slots = [this.selectedRestaurant];
         this.actionText = "Nah, Something Else";
+        this.liveRegion = `Spinner stopped on ${this.selectedRestaurant.name}.`;
         this.isRunning = false;
       }, 5000);
     },
@@ -173,6 +177,7 @@ export default {
         if (!res.ok) throw new Error(res.statusText);
         this.decisionMade = true;
         this.isUpdating = true;
+        this.liveRegion = `You chose ${this.selectedRestaurant.name}.`;
         this.throwConfetti();
       } catch (err) {
         this.isUpdating = false;
