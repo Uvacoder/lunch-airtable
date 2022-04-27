@@ -1,14 +1,11 @@
-# Default starter for Gridsome
+# Lunch Time Slot Machine
 
-This is the project you get when you run `gridsome create new-project`.
+This project is wired up to an Airtable database. If you want to build this for yourself, you'll to set up one for yourself and to get the airtable keys.
 
-### 1. Install Gridsome CLI tool if you don't have
+## Install
+1. Pull down this bad boy
+1. `yarn` to install the dependencies
+1. Add a `.env` with your airtable keys: `AIRTABLE_API_KEY`, `AIRTABLE_BASE`, `AIRTABLE_TABLE_NAME`
+1. `yarn run dev` to start it up and play some lunch time slots
 
-`npm install --global @gridsome/cli`
-
-### 2. Create a Gridsome project
-
-1. `gridsome create my-gridsome-site` to install default starter
-2. `cd my-gridsome-site` to open the folder
-3. `gridsome develop` to start a local dev server at `http://localhost:8080`
-4. Happy coding 🎉🙌
+If you want to try the slots without running the project, you can take a look at the slightly outdated [CodePen](https://codepen.io/davidleininger/pen/GRymNKY) to see how it was built.
